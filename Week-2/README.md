@@ -7,6 +7,8 @@ void main() {
   }
 }
 ```
+Hasil
+![Hasil](img/image.png)
 ## Soal 2
 Mengapa sangat penting untuk memahami bahasa pemrograman Dart sebelum kita menggunakan framework Flutter ? Jelaskan!
 > Karrena framework Flutter berdasar pada bahasa pemrograman dart.

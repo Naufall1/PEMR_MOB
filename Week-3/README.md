@@ -1,6 +1,6 @@
-Nama  : Muhammad Naufal Kurniawan
-Kelas : TI-3C (18)
-NIM   : 2241720214
+Nama  : Muhammad Naufal Kurniawan<br>
+Kelas : TI-3C (18)<br>
+NIM   : 2241720214<br>
 
 # Praktikum 1: Menerapkan Control Flows ("if/else")
 

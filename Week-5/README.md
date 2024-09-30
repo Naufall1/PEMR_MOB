@@ -1,4 +1,4 @@
-Nama    : Muhammad Naufal Kurniawan
+Nama    : Muhammad Naufal Kurniawan <br>
 Kelas   : TI-3C [18]
 NIM     : 2241720214
 

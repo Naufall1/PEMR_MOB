@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ,
+      home: const FuturePage(),
     );
   }
 }
@@ -37,14 +37,21 @@ class _FuturePageState extends State<FuturePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Back from the future'),
+        title: const Text('Naufal'),
       ),
       body: Center(
         child: Column(children: [
           const Spacer(),
           ElevatedButton(
               onPressed: () {
-                
+                setState(() {});
+                getData().then((value) {
+                  result = value.body.toString().substring(0, 450);
+                  setState(() {});
+                }).catchError((_) {
+                  result = 'An error occurrred';
+                  setState(() {});
+                });
           }, child: const Text('GO!')),
           const Spacer(),
           Text(result),

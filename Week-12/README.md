@@ -91,6 +91,30 @@ Future<Response> getData() async {
 > Carilah judul buku favorit Anda di Google Books, lalu ganti ID buku pada variabel path di kode tersebut.
 > ![book](image-1.png)
 
+### Langkah 5: Tambah kode di ElevatedButton
+Tambahkan kode pada onPressed di ElevatedButton.
+```dart
+ElevatedButton(
+    onPressed: () {
+    setState(() {});
+    getData().then((value) {
+        result = value.body.toString().substring(0, 450);
+        setState(() {});
+    }).catchError((_) {
+        result = 'An error occurrred';
+        setState(() {});
+    });
+}, child: const Text('GO!')),
+```
+Lakukan run aplikasi Flutter Anda.
+
+> Soal 3
+> - Jelaskan maksud kode langkah 5 tersebut terkait substring dan catchError!
+>   - `substring(0, 450)` berguna untuk membatasi panjang teks yang akan ditampilkan, sehingga hanya 450 karakter pertama dari data yang diambil yang akan ditampilkan dalam variabel result.
+>   - `catchError` adalah metode yang digunakan untuk menangani kesalahan yang terjadi saat pemanggilan fungsi getData().
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 3".
+> ![result](result-prak1.gif)
+
 
 ## Praktikum 2: Menggunakan await/async untuk menghindari callbacks
 ## Praktikum 3: Menggunakan Completer di Future

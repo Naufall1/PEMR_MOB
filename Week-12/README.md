@@ -787,3 +787,125 @@ Lakukan run, jika terjadi error silakan diperbaiki.
 
 
 ## Praktikum 9: Memanfaatkan async/await dengan Widget Dialog
+
+### Langkah 1: Buat file baru navigation_dialog.dart
+Buat file dart baru di folder lib project Anda.
+![dir](image-9.png)
+
+### Langkah 2: Isi kode navigation_dialog.dart
+```dart
+import 'package:flutter/material.dart';
+
+class NavigationDialogScreen extends StatefulWidget {
+  const NavigationDialogScreen({super.key});
+
+  @override
+  State<NavigationDialogScreen> createState() => _NavigationDialogScreenState();
+}
+
+class _NavigationDialogScreenState extends State<NavigationDialogScreen> {
+  Color color = const Color(0xffF0F3FF);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: color,
+      appBar: AppBar(
+        title: const Text('Navigation Dialog Screen [Naufal]'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+            onPressed: () {
+
+            },
+            child: const Text('Change Color')),
+      ),
+    );
+  }
+}
+```
+
+### Langkah 3: Tambah method async
+```dart
+_showColorDialog(BuildContext context) async {
+  await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) {
+      return AlertDialog(
+        title: const Text('Very important question'),
+        content: const Text('Please choose a color'),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                color = const Color(0xff15F5BA);
+                Navigator.pop(context, color);
+              },
+              child: const Text('Mint')),
+          TextButton(
+              onPressed: () {
+                color = const Color(0xff836FFF);
+                Navigator.pop(context, color);
+              },
+              child: const Text('Purple')),
+          TextButton(
+              onPressed: () {
+                color = const Color(0xff211951);
+                Navigator.pop(context, color);
+              },
+              child: const Text('Navy')),
+        ],
+      );
+    },
+  );
+  setState(() {
+
+  });
+}
+```
+
+### Langkah 4: Panggil method di ElevatedButton
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: color,
+    appBar: AppBar(
+      title: const Text('Navigation Dialog Screen [Naufal]'),
+    ),
+    body: Center(
+      child: ElevatedButton(
+          onPressed: () {
+            _showColorDialog(context);
+          },
+          child: const Text('Change Color')),
+    ),
+  );
+}
+```
+
+### Langkah 5: Edit main.dart
+Ubah properti home
+```dart
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Naufal',
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    ),
+    home: const NavigationDialogScreen(),
+  );
+}
+```
+
+### Langkah 6: Run
+Coba ganti warna background dengan widget dialog tersebut.
+
+> Soal 17
+> - Cobalah klik setiap button, apa yang terjadi ? Mengapa demikian ?
+>   Ketika button change color di-klik maka akan memunculkan sebuah dialog yang berisi pilihan button warna, ketika warna dipilih maka background halaman akan berubah sesuai dengan warna yang dipilih. Itu bisa terjadi karena setiap aksi dari button akan merubah isi dari variabel color.
+> - Gantilah 3 warna pada langkah 3 dengan warna favorit Anda!
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 17".
+
+![dir](result-prak9.gif)

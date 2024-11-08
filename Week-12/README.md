@@ -5,11 +5,11 @@
 Buatlah sebuah project flutter baru dengan nama `books` di folder src `week-12` repository GitHub Anda.
 
 Kemudian Tambahkan dependensi http dengan mengetik perintah `flutter pub get http`
-![plugin http](image.png)
+![plugin http](images/image.png)
 
 ### Langkah 2: Cek file pubspec.yaml
 Jika berhasil install plugin, pastikan plugin http telah ada di file pubspec.
-![plugin http](image.png)
+![plugin http](images/image.png)
 
 ### Langkah 3: Buka file main.dart
 Ketiklah kode seperti berikut ini.
@@ -89,7 +89,7 @@ Future<Response> getData() async {
 ```
 > Soal 2
 > Carilah judul buku favorit Anda di Google Books, lalu ganti ID buku pada variabel path di kode tersebut.
-> ![book](image-1.png)
+> ![book](images/image-1.png)
 
 ### Langkah 5: Tambah kode di ElevatedButton
 Tambahkan kode pada onPressed di ElevatedButton.
@@ -113,7 +113,7 @@ Lakukan run aplikasi Flutter Anda.
 >   - `substring(0, 450)` berguna untuk membatasi panjang teks yang akan ditampilkan, sehingga hanya 450 karakter pertama dari data yang diambil yang akan ditampilkan dalam variabel result.
 >   - `catchError` adalah metode yang digunakan untuk menangani kesalahan yang terjadi saat pemanggilan fungsi getData().
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 3".
-> ![result](result-prak1.gif)
+> ![result](images/result-prak1.gif)
 
 
 ## Praktikum 2: Menggunakan await/async untuk menghindari callbacks
@@ -172,7 +172,7 @@ ElevatedButton(
 ### Langkah 4: Run
 Akhirnya, run atau tekan F5 jika aplikasi belum running. Maka Anda akan melihat seperti gambar berikut, hasil angka 6 akan tampil setelah delay 9 detik.
 
-![result prak 2](result-prak2.gif)
+![result prak 2](images/result-prak2.gif)
 
 > Soal 4
 > - Jelaskan maksud kode langkah 1 dan 2 tersebut!
@@ -230,7 +230,7 @@ ElevatedButton(
 ### Langkah 4:
 Terakhir, run atau tekan F5 untuk melihat hasilnya jika memang belum running. Bisa juga lakukan hot restart jika aplikasi sudah running. Maka hasilnya akan seperti gambar berikut ini. Setelah 5 detik, maka angka 42 akan tampil.
 
-![result prak 3](result-prak3.gif)
+![result prak 3](images/result-prak3.gif)
 
 > Soal 5
 > - Jelaskan maksud kode langkah 2 tersebut!
@@ -267,7 +267,7 @@ getNumber().then((value) {
 > Modifikasi pada langkah 5 dan 6 lebih memfokuskan pada pemrosesan hasil `Future` di `UI` dan menambah penanganan error, sementara langkah 2 hanya membuat `Future` dengan `Completer` untuk mengatur penyelesaiannya secara manual tanpa langsung menampilkan hasil di `UI` atau menangani error.
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 6".
 
-![result prak 3](result-prak3-2.gif)
+![result prak 3](images/result-prak3-2.gif)
 
 ## Praktikum 4: Memanggil Future secara paralel
 
@@ -307,7 +307,7 @@ Anda akan melihat hasilnya dalam 3 detik berupa angka 6 lebih cepat dibandingkan
 > Soal 7
 > Capture hasil praktikum Anda berupa `GIF` dan lampirkan di `README`. Lalu lakukan commit dengan pesan `"W12: Soal 7"`.
 
-![result prak 4](result-prak4-1.gif)
+![result prak 4](images/result-prak4-1.gif)
 
 ### Langkah 4: Ganti variabel futureGroup
 Anda dapat menggunakan FutureGroup dengan `Future.wait` seperti kode berikut.
@@ -320,7 +320,7 @@ final futures = Future.wait<int>([
 ]);
 ```
 
-![result prak 4](result-prak4-2.gif)
+![result prak 4](images/result-prak4-2.gif)
 
 > Soal 8
 > Jelaskan maksud perbedaan kode langkah 1 dan 4!
@@ -359,7 +359,7 @@ ElevatedButton(
 
 ### Langkah 3: Run
 Lakukan run dan klik tombol GO! maka akan menghasilkan seperti gambar berikut.
-![...](image-2.png)
+![...](images/image-2.png)
 
 ### Langkah 4: Tambah method handleError()
 Tambahkan kode ini di dalam class `_FutureStatePage`
@@ -377,7 +377,7 @@ Future handleError() async {
 }
 ```
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 > Soal 10
 > Panggil method `handleError()` tersebut di `ElevatedButton`, lalu run. Apa hasilnya? Jelaskan perbedaan kode langkah 1 dan 4!
@@ -395,7 +395,7 @@ Tambahkan plugin geolocator dengan mengetik perintah berikut di terminal.
 ```bash
 flutter pub add geolocator
 ```
-![install geolocator](image-4.png)
+![install geolocator](images/image-4.png)
 
 ### Langkah 2: Tambah permission GPS
 Jika Anda menargetkan untuk platform Android, maka tambahkan baris kode berikut di file android/app/src/main/androidmanifest.xml
@@ -456,7 +456,7 @@ File: `androidmanifest.xml`
 
 ### Langkah 3: Buat file geolocation.dart
 Tambahkan file baru ini di folder lib project Anda.
-![dir](image-5.png)
+![dir](images/image-5.png)
 
 ### Langkah 4: Buat StatefulWidget
 Buat class LocationScreen di dalam file geolocation.dart
@@ -541,7 +541,7 @@ Widget build(BuildContext context) {
 
 ### Langkah 7: Run
 Run project Anda di device atau emulator (bukan browser), maka akan tampil seperti berikut ini.
-![result](image-6.png)
+![result](images/image-6.png)
 
 ### Langkah 8: Tambahkan animasi loading
 Tambahkan widget loading seperti kode berikut. Lalu hot restart, perhatikan perubahannya.
@@ -564,7 +564,7 @@ Widget build(BuildContext context) {
 >   Program dapat berjalan dengan lancar di browser, dengan memberikan akses lokasi pada browser.
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 12".
 
-![result](result-prak6.gif)
+![result](images/result-prak6.gif)
 
 ## Praktikum 7: Manajemen Future dengan FutureBuilder
 
@@ -627,7 +627,7 @@ Widget build(BuildContext context) {
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 13".
 > - Seperti yang Anda lihat, menggunakan FutureBuilder lebih efisien, clean, dan reactive dengan Future bersama UI.
 
-![result](result-prak7.gif)
+![result](images/result-prak7.gif)
 
 ### Langkah 5: Tambah handling error
 Tambahkan kode berikut untuk menangani ketika terjadi error. Kemudian hot restart.
@@ -645,14 +645,14 @@ else if (snapshot.connectionState == ConnectionState.done) {
 >   Tidak ada perbedaan dengan langkah sebelumnya, karena pada langkah 5 hanya menambahkan error handling, dimana error handling hanya akan diekseskusi ketika terdapat error ketika melakukan fetch data.
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 14".
 
-![result](result-prak7.gif)
+![result](images/result-prak7.gif)
 
 
 ## Praktikum 8: Navigation route dengan Future Function
 
 ### Langkah 1: Buat file baru navigation_first.dart
 Buatlah file baru ini di project lib Anda.
-![alt text](image-7.png)
+![alt text](images/image-7.png)
 
 ### Langkah 2: Isi kode navigation_first.dart
 ```dart
@@ -703,7 +703,7 @@ Future _navigateAndGetColor(BuildContext context) async {
 
 ### Langkah 4: Buat file baru navigation_second.dart
 Buat file baru ini di project lib Anda. Silakan jika ingin mengelompokkan view menjadi satu folder dan sesuaikan impor yang dibutuhkan.
-![alt text](image-8.png)
+![alt text](images/image-8.png)
 
 ### Langkah 5: Buat class NavigationSecond dengan StatefulWidget
 ```dart
@@ -783,14 +783,14 @@ Lakukan run, jika terjadi error silakan diperbaiki.
 > - Gantilah 3 warna pada langkah 5 dengan warna favorit Anda!
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 16".
 
-![result](result-prak8.gif)
+![result](images/result-prak8.gif)
 
 
 ## Praktikum 9: Memanfaatkan async/await dengan Widget Dialog
 
 ### Langkah 1: Buat file baru navigation_dialog.dart
 Buat file dart baru di folder lib project Anda.
-![dir](image-9.png)
+![dir](images/image-9.png)
 
 ### Langkah 2: Isi kode navigation_dialog.dart
 ```dart
@@ -908,4 +908,4 @@ Coba ganti warna background dengan widget dialog tersebut.
 > - Gantilah 3 warna pada langkah 3 dengan warna favorit Anda!
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 17".
 
-![dir](result-prak9.gif)
+![dir](images/result-prak9.gif)

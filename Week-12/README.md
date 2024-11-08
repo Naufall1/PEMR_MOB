@@ -649,4 +649,141 @@ else if (snapshot.connectionState == ConnectionState.done) {
 
 
 ## Praktikum 8: Navigation route dengan Future Function
+
+### Langkah 1: Buat file baru navigation_first.dart
+Buatlah file baru ini di project lib Anda.
+![alt text](image-7.png)
+
+### Langkah 2: Isi kode navigation_first.dart
+```dart
+import 'package:flutter/material.dart';
+
+class NavigationFirst extends StatefulWidget {
+  const NavigationFirst({super.key});
+
+  @override
+  State<NavigationFirst> createState() => _NavigationFirstState();
+}
+
+class _NavigationFirstState extends State<NavigationFirst> {
+  Color color = Colors.blue.shade700;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: color,
+      appBar: AppBar(
+        title: const Text('Navigation First Screen [Naufal]'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+            onPressed: () {
+              _navigateAndGetColor(context);
+            },
+            child: const Text('Change Color')
+        ),
+      ),
+    );
+  }
+}
+```
+
+> Soal 15
+> - Tambahkan nama panggilan Anda pada tiap properti title sebagai identitas pekerjaan Anda.
+> - Silakan ganti dengan warna tema favorit Anda.
+
+### Langkah 3: Tambah method di class _NavigationFirstState
+Tambahkan method ini.
+```dart
+Future _navigateAndGetColor(BuildContext context) async {
+  color = await Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const NavigationSecond()),) ?? Colors.blue;
+  setState(() {});
+}
+```
+
+### Langkah 4: Buat file baru navigation_second.dart
+Buat file baru ini di project lib Anda. Silakan jika ingin mengelompokkan view menjadi satu folder dan sesuaikan impor yang dibutuhkan.
+![alt text](image-8.png)
+
+### Langkah 5: Buat class NavigationSecond dengan StatefulWidget
+```dart
+import 'package:flutter/material.dart';
+
+class NavigationSecond extends StatefulWidget {
+  const NavigationSecond({super.key});
+
+  @override
+  State<NavigationSecond> createState() => _NavigationSecondState();
+}
+
+class _NavigationSecondState extends State<NavigationSecond> {
+  @override
+  Widget build(BuildContext context) {
+    Color color;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Navigation Second Screen [Naufal]'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  color = Colors.red.shade700;
+                  Navigator.pop(context, color);
+                },
+                child: const Text('Red')),
+            ElevatedButton(
+                onPressed: () {
+                  color = Colors.green.shade700;
+                  Navigator.pop(context, color);
+                },
+                child: const Text('Green')),
+            ElevatedButton(
+                onPressed: () {
+                  color = Colors.blue.shade700;
+                  Navigator.pop(context, color);
+                },
+                child: const Text('Blue')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Langkah 6: Edit main.dart
+Lakukan edit properti home.
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Naufal',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: const NavigationFirst(),
+    );
+  }
+}
+```
+
+### Langkah 8: Run
+Lakukan run, jika terjadi error silakan diperbaiki.
+
+> Soal 16
+> - Cobalah klik setiap button, apa yang terjadi ? Mengapa demikian ?
+>   Ketikan button `chane color` di klik maka akan membuka halaman baru yang berisi 3 button untuk pilihan warna. Ketika melakukan klik pada button pilihan warna tersebut maka akan kembali menuju halaman utama sebelumnya dengan warna background yang telah berubah sesuai dengan warna pada button yang kita pilih.
+> - Gantilah 3 warna pada langkah 5 dengan warna favorit Anda!
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 16".
+
+![result](result-prak8.gif)
+
+
 ## Praktikum 9: Memanfaatkan async/await dengan Widget Dialog

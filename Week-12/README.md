@@ -117,6 +117,68 @@ Lakukan run aplikasi Flutter Anda.
 
 
 ## Praktikum 2: Menggunakan await/async untuk menghindari callbacks
+
+### Langkah 1: Buka file main.dart
+Tambahkan tiga method berisi kode seperti berikut di dalam class `_FuturePageState`.
+
+```dart
+Future<int> returnOneAsync() async {
+  await Future.delayed(const Duration(seconds: 3));
+  return 1;
+}
+
+Future<int> returnTwoAsync() async {
+  await Future.delayed(const Duration(seconds: 3));
+  return 2;
+}
+
+Future<int> returnThreeAsync() async {
+  await Future.delayed(const Duration(seconds: 3));
+  return 3;
+}
+```
+
+### Langkah 2: Tambah method count()
+Lalu tambahkan lagi method ini di bawah ketiga method sebelumnya.
+```dart
+Future count() async {
+  int total = 0;
+  total = await returnOneAsync();
+  total += await returnTwoAsync();
+  total += await returnThreeAsync();
+  setState(() {
+    result = total.toString();
+  });
+}
+```
+
+### Langkah 3: Panggil count()
+Lakukan comment kode sebelumnya, ubah isi kode onPressed() menjadi seperti berikut.
+```dart
+ElevatedButton(
+    onPressed: () {
+      // setState(() {});
+      // getData().then((value) {
+      //   result = value.body.toString().substring(0, 450);
+      //   setState(() {});
+      // }).catchError((_) {
+      //   result = 'An error occurrred';
+      //   setState(() {});
+      // });
+      count();
+}, child: const Text('GO!'))
+```
+
+### Langkah 4: Run
+Akhirnya, run atau tekan F5 jika aplikasi belum running. Maka Anda akan melihat seperti gambar berikut, hasil angka 6 akan tampil setelah delay 9 detik.
+
+![result prak 2](result-prak2.gif)
+
+> Soal 4
+> - Jelaskan maksud kode langkah 1 dan 2 tersebut!
+>   kode pada langkah 1 dan 2 di atas menunjukkan cara kerja pemanggilan `asynchronous` secara berurutan di Flutter menggunakan Future dan await. Dengan mendefinisikan tiga fungsi `asynchronous` yang masing-masing mengembalikan nilai setelah jeda waktu, kemudian memanggil fungsi-fungsi tersebut secara berurutan dalam fungsi `count()`, kita dapat menghitung total hasil dari ketiga fungsi tersebut. Fungsi `count()` memastikan setiap pemanggilan `asynchronous` selesai sebelum melanjutkan ke pemanggilan berikutnya, menghasilkan total akhir yang ditampilkan di UI setelah semua operasi selesai.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 4".
+
 ## Praktikum 3: Menggunakan Completer di Future
 ## Praktikum 4: Memanggil Future secara paralel
 ## Praktikum 5: Menangani Respon Error pada Async Code

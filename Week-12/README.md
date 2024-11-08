@@ -361,6 +361,32 @@ ElevatedButton(
 Lakukan run dan klik tombol GO! maka akan menghasilkan seperti gambar berikut.
 ![...](image-2.png)
 
+### Langkah 4: Tambah method handleError()
+Tambahkan kode ini di dalam class `_FutureStatePage`
+```dart
+Future handleError() async {
+  try {
+    await returnError();
+  } catch (error) {
+    setState(() {
+      result = error.toString();
+    });
+  } finally {
+    print('Complete');
+  }
+}
+```
+
+![alt text](image-3.png)
+
+> Soal 10
+> Panggil method `handleError()` tersebut di `ElevatedButton`, lalu run. Apa hasilnya? Jelaskan perbedaan kode langkah 1 dan 4!
+> - Pendekatan Error Handling: Langkah 1 menggunakan method chaining (`catchError`), sedangkan Langkah 4 menggunakan `try-catch-finally` dalam metode `handleError()`.
+> - Kontrol Eksekusi: Langkah 4 menawarkan struktur yang lebih terorganisir dengan `try-catch-finally`, sehingga semua tindakan (`error` handling dan pembersihan) dikelola dalam satu tempat.
+> - Konsistensi Kode: Langkah 4 lebih cocok untuk situasi di mana Anda perlu memastikan tindakan spesifik setelah blok `try-catch`, seperti membersihkan data atau menutup koneksi.
+>
+> Pendekatan pada langkah 4 sering dianggap lebih jelas dan terstruktur, terutama dalam kasus kompleks atau di mana ada banyak tindakan setelah Future selesai.
+
 ## Praktikum 6: Menggunakan Future dengan StatefulWidget
 ## Praktikum 7: Manajemen Future dengan FutureBuilder
 ## Praktikum 8: Navigation route dengan Future Function

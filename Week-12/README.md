@@ -270,6 +270,46 @@ getNumber().then((value) {
 ![result prak 3](result-prak3-2.gif)
 
 ## Praktikum 4: Memanggil Future secara paralel
+
+### Langkah 1: Buka file main.dart
+Tambahkan method ini ke dalam class `_FuturePageState`
+```dart
+void returnFG() {
+  FutureGroup<int> futureGroup = FutureGroup<int>();
+  futureGroup.add(returnOneAsync());
+  futureGroup.add(returnTwoAsync());
+  futureGroup.add(returnThreeAsync());
+  futureGroup.close();
+  futureGroup.future.then((value) {
+    int total = 0;
+    for (var element in value) {
+      total += element;
+    }
+    setState(() {
+      result = total.toString();
+    });
+  },);
+}
+```
+
+### Langkah 2: Edit onPressed()
+Anda bisa hapus atau comment kode sebelumnya, kemudian panggil method dari langkah 1 tersebut.
+```dart
+ElevatedButton(
+    onPressed: () {
+      returnFG();
+}, child: const Text('GO!')),
+```
+
+### Langkah 3: Run
+Anda akan melihat hasilnya dalam 3 detik berupa angka 6 lebih cepat dibandingkan praktikum sebelumnya menunggu sampai 9 detik.
+
+> Soal 7
+> Capture hasil praktikum Anda berupa `GIF` dan lampirkan di `README`. Lalu lakukan commit dengan pesan `"W12: Soal 7"`.
+
+![result prak 4](result-prak4-1.gif)
+
+
 ## Praktikum 5: Menangani Respon Error pada Async Code
 ## Praktikum 6: Menggunakan Future dengan StatefulWidget
 ## Praktikum 7: Manajemen Future dengan FutureBuilder

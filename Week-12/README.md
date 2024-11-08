@@ -629,6 +629,24 @@ Widget build(BuildContext context) {
 
 ![result](result-prak7.gif)
 
+### Langkah 5: Tambah handling error
+Tambahkan kode berikut untuk menangani ketika terjadi error. Kemudian hot restart.
+```dart
+else if (snapshot.connectionState == ConnectionState.done) {
+  if (snapshot.hasError) {
+     return Text('Something terrible happened!');
+  }
+  return Text(snapshot.data.toString());
+}
+```
+
+> Soal 14
+> - Apakah ada perbedaan UI dengan langkah sebelumnya? Mengapa demikian?
+>   Tidak ada perbedaan dengan langkah sebelumnya, karena pada langkah 5 hanya menambahkan error handling, dimana error handling hanya akan diekseskusi ketika terdapat error ketika melakukan fetch data.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 14".
+
+![result](result-prak7.gif)
+
 
 ## Praktikum 8: Navigation route dengan Future Function
 ## Praktikum 9: Memanfaatkan async/await dengan Widget Dialog

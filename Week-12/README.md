@@ -330,6 +330,37 @@ final futures = Future.wait<int>([
 > Keduanya sama-sama menjalankan Future secara paralel, namun FutureGroup memberikan kontrol lebih dinamis, sedangkan Future.wait lebih langsung dan efisien untuk situasi dengan daftar Future yang tetap.
 
 ## Praktikum 5: Menangani Respon Error pada Async Code
+
+### Langkah 1: Buka file main.dart
+Tambahkan method ini ke dalam `class _FuturePageState`
+```dart
+Future returnError() async {
+  await Future.delayed(const Duration(seconds: 2));
+  throw Exception("Something terrible happend!");
+}
+```
+
+### Langkah 2: ElevatedButton
+Ganti dengan kode berikut
+```dart
+ElevatedButton(
+    onPressed: () {
+      returnError().then((value) {
+        setState(() {
+          result = 'Succrss';
+        });
+      }).catchError((onError) {
+        setState(() {
+          result = onError.toString();
+        });
+      }).whenComplete(() => print('Complete'),);
+}, child: const Text('GO!'))
+```
+
+### Langkah 3: Run
+Lakukan run dan klik tombol GO! maka akan menghasilkan seperti gambar berikut.
+![...](image-2.png)
+
 ## Praktikum 6: Menggunakan Future dengan StatefulWidget
 ## Praktikum 7: Manajemen Future dengan FutureBuilder
 ## Praktikum 8: Navigation route dengan Future Function

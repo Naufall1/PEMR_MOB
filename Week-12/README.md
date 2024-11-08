@@ -179,7 +179,64 @@ Akhirnya, run atau tekan F5 jika aplikasi belum running. Maka Anda akan melihat 
 >   kode pada langkah 1 dan 2 di atas menunjukkan cara kerja pemanggilan `asynchronous` secara berurutan di Flutter menggunakan Future dan await. Dengan mendefinisikan tiga fungsi `asynchronous` yang masing-masing mengembalikan nilai setelah jeda waktu, kemudian memanggil fungsi-fungsi tersebut secara berurutan dalam fungsi `count()`, kita dapat menghitung total hasil dari ketiga fungsi tersebut. Fungsi `count()` memastikan setiap pemanggilan `asynchronous` selesai sebelum melanjutkan ke pemanggilan berikutnya, menghasilkan total akhir yang ditampilkan di UI setelah semua operasi selesai.
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 4".
 
+
 ## Praktikum 3: Menggunakan Completer di Future
+
+### Langkah 1: Buka main.dart
+Pastikan telah impor package async berikut.
+```dart
+import 'package:async/async.dart';
+```
+
+### Langkah 2: Tambahkan variabel dan method
+Tambahkan variabel late dan method di class _FuturePageState seperti ini.
+```dart
+late Completer completer;
+
+Future getNumber() {
+  completer = Completer<int>();
+  calculate();
+  return completer.future;
+}
+
+Future calculate() async {
+  await Future.delayed(const Duration(seconds : 5));
+  completer.complete(42);
+}
+```
+
+### Langkah 3: Ganti isi kode onPressed()
+Tambahkan kode berikut pada fungsi `onPressed()`. Kode sebelumnya bisa Anda comment.
+```dart
+ElevatedButton(
+    onPressed: () {
+      // setState(() {});
+      // getData().then((value) {
+      //   result = value.body.toString().substring(0, 450);
+      //   setState(() {});
+      // }).catchError((_) {
+      //   result = 'An error occurrred';
+      //   setState(() {});
+      // });
+      // count();
+      getNumber().then((value) {
+        setState(() {
+          result = value.toString();
+        });
+      },);
+}, child: const Text('GO!'))
+```
+
+### Langkah 4:
+Terakhir, run atau tekan F5 untuk melihat hasilnya jika memang belum running. Bisa juga lakukan hot restart jika aplikasi sudah running. Maka hasilnya akan seperti gambar berikut ini. Setelah 5 detik, maka angka 42 akan tampil.
+
+![result prak 3](result-prak3.gif)
+
+> Soal 5
+> - Jelaskan maksud kode langkah 2 tersebut!
+>   Kode tersebut menggunakan Completer untuk menghasilkan Future yang bisa dikendalikan secara manual. Method `getNumber()` memulai proses asynchronous `calculate()`, yang setelah jeda waktu 5 detik, menyelesaikan Future dengan nilai `42`. Teknik ini bermanfaat jika kita perlu menyelesaikan Future dengan cara atau waktu yang khusus, di luar kontrol otomatis dari mekanisme `async/await`.
+> - Capture hasil praktikum Anda berupa `GIF` dan lampirkan di `README`. Lalu lakukan commit dengan pesan `"W12: Soal 5"`.
+
 ## Praktikum 4: Memanggil Future secara paralel
 ## Praktikum 5: Menangani Respon Error pada Async Code
 ## Praktikum 6: Menggunakan Future dengan StatefulWidget

@@ -309,6 +309,25 @@ Anda akan melihat hasilnya dalam 3 detik berupa angka 6 lebih cepat dibandingkan
 
 ![result prak 4](result-prak4-1.gif)
 
+### Langkah 4: Ganti variabel futureGroup
+Anda dapat menggunakan FutureGroup dengan `Future.wait` seperti kode berikut.
+
+```dart
+final futures = Future.wait<int>([
+  returnOneAsync(),
+  returnTwoAsync(),
+  returnThreeAsync(),
+]);
+```
+
+![result prak 4](result-prak4-2.gif)
+
+> Soal 8
+> Jelaskan maksud perbedaan kode langkah 1 dan 4!
+> - Fleksibilitas: FutureGroup memungkinkan penambahan Future secara dinamis, sedangkan Future.wait bekerja dengan daftar Future yang tetap.
+> - Kompleksitas dan Kinerja: Future.wait lebih sederhana dan cocok untuk tugas paralel yang sudah terstruktur dengan baik, sementara FutureGroup lebih cocok untuk kasus di mana jumlah Future bisa berubah selama eksekusi.
+>
+> Keduanya sama-sama menjalankan Future secara paralel, namun FutureGroup memberikan kontrol lebih dinamis, sedangkan Future.wait lebih langsung dan efisien untuk situasi dengan daftar Future yang tetap.
 
 ## Praktikum 5: Menangani Respon Error pada Async Code
 ## Praktikum 6: Menggunakan Future dengan StatefulWidget

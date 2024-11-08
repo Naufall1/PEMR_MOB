@@ -567,5 +567,68 @@ Widget build(BuildContext context) {
 ![result](result-prak6.gif)
 
 ## Praktikum 7: Manajemen Future dengan FutureBuilder
+
+### Langkah 1: Modifikasi method getPosition()
+Buka file geolocation.dart kemudian ganti isi method dengan kode ini.
+```dart
+Future<Position> getPosition() async {
+  await Geolocator.requestPermission();
+  await Future.delayed(const Duration(seconds: 3));
+  await Geolocator.isLocationServiceEnabled();
+  Position? position = await Geolocator.getCurrentPosition();
+  return position;
+}
+```
+
+### Langkah 2: Tambah variabel
+Tambah variabel ini di `class _LocationScreenState`
+```dart
+late Future<Position> position;
+```
+
+### Langkah 3: Tambah initState()
+Tambah method ini dan set variabel position
+```dart
+@override
+void initState() {
+  super.initState();
+  position = getPosition();
+}
+```
+
+### Langkah 4: Edit method build()
+Ketik kode berikut dan sesuaikan. Kode lama bisa Anda comment atau hapus.
+```dart
+@override
+Widget build(BuildContext context) {
+  final myWidget = myPosition == '' ?
+    const CircularProgressIndicator() : Text(myPosition);
+  return Scaffold(
+    appBar: AppBar(title: const Text('Current Location [Naufal]'),),
+    body: Center(child: FutureBuilder(
+        future: position,
+        builder: (BuildContext context,AsyncSnapshot<Position> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            return Text(snapshot.data.toString());
+          } else {
+            return const Text('');
+          }
+        },
+    ),),
+  );
+}
+```
+
+> Soal 13
+> - Apakah ada perbedaan UI dengan praktikum sebelumnya? Mengapa demikian?
+>   Perbedaan terdapat pada penulisan hasilnya, pada praktikum sebelumnya penulisan hasil dilakukan manual dengan mengambil masing-masing nilai `latitude` dan `longitude`, sedangkan pada praktikum kali ini penulisan hasil langsung diambil dari hasil fetch location yang kemudian dirubah menjadi string.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 13".
+> - Seperti yang Anda lihat, menggunakan FutureBuilder lebih efisien, clean, dan reactive dengan Future bersama UI.
+
+![result](result-prak7.gif)
+
+
 ## Praktikum 8: Navigation route dengan Future Function
 ## Praktikum 9: Memanfaatkan async/await dengan Widget Dialog

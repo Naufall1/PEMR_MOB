@@ -237,6 +237,38 @@ Terakhir, run atau tekan F5 untuk melihat hasilnya jika memang belum running. Bi
 >   Kode tersebut menggunakan Completer untuk menghasilkan Future yang bisa dikendalikan secara manual. Method `getNumber()` memulai proses asynchronous `calculate()`, yang setelah jeda waktu 5 detik, menyelesaikan Future dengan nilai `42`. Teknik ini bermanfaat jika kita perlu menyelesaikan Future dengan cara atau waktu yang khusus, di luar kontrol otomatis dari mekanisme `async/await`.
 > - Capture hasil praktikum Anda berupa `GIF` dan lampirkan di `README`. Lalu lakukan commit dengan pesan `"W12: Soal 5"`.
 
+### Langkah 5: Ganti method calculate()
+Gantilah isi code method `calculate()` seperti kode berikut, atau Anda dapat membuat `calculate2()`
+```dart
+calculate() async {
+  try {
+    await new Future.delayed(const Duration(seconds: 5));
+    completer.complete(42);
+  } catch (_) {
+    completer.completeError({});
+  }
+}
+```
+
+### Langkah 6: Pindah ke onPressed()
+Ganti menjadi kode seperti berikut.
+```dart
+getNumber().then((value) {
+  setState(() {
+    result = value.toString();
+  });
+}).catchError((e) {
+  result = 'An error occurred';
+});
+```
+
+> Soal 6
+> - Jelaskan maksud perbedaan kode langkah 2 dengan langkah 5-6 tersebut!
+> Modifikasi pada langkah 5 dan 6 lebih memfokuskan pada pemrosesan hasil `Future` di `UI` dan menambah penanganan error, sementara langkah 2 hanya membuat `Future` dengan `Completer` untuk mengatur penyelesaiannya secara manual tanpa langsung menampilkan hasil di `UI` atau menangani error.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 6".
+
+![result prak 3](result-prak3-2.gif)
+
 ## Praktikum 4: Memanggil Future secara paralel
 ## Praktikum 5: Menangani Respon Error pada Async Code
 ## Praktikum 6: Menggunakan Future dengan StatefulWidget

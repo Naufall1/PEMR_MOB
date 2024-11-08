@@ -46,20 +46,13 @@ class _FuturePageState extends State<FuturePage> {
           const Spacer(),
           ElevatedButton(
               onPressed: () {
-                // setState(() {});
-                // getData().then((value) {
-                //   result = value.body.toString().substring(0, 450);
-                //   setState(() {});
-                // }).catchError((_) {
-                //   result = 'An error occurrred';
-                //   setState(() {});
-                // });
-                // count();
                 getNumber().then((value) {
                   setState(() {
                     result = value.toString();
                   });
-                },);
+                }).catchError((e) {
+                  result = 'An error occurred';
+                });
           }, child: const Text('GO!')),
           const Spacer(),
           Text(result),
@@ -110,8 +103,12 @@ class _FuturePageState extends State<FuturePage> {
     return completer.future;
   }
 
-  Future calculate() async {
-    await Future.delayed(const Duration(seconds : 5));
-    completer.complete(42);
+  calculate() async {
+    try {
+      await new Future.delayed(const Duration(seconds: 5));
+      completer.complete(42);
+    } catch (_) {
+      completer.completeError({});
+    }
   }
 }

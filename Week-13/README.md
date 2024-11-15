@@ -371,3 +371,73 @@ void addRandomNumber() {
 >   - Langkah 15: `addRandomNumber` diubah untuk memicu kesalahan pada stream alih-alih menambahkan angka, sehingga UI menampilkan indikator kesalahan setiap kali tombol ditekan.
 > - Kembalikan kode seperti semula pada Langkah 15, comment `addError()` agar Anda dapat melanjutkan ke praktikum 3 berikutnya.
 > - Lalu lakukan commit dengan pesan "W13: Jawaban Soal 7".
+
+
+## Praktikum 3: Injeksi data ke streams
+
+### Langkah 1: Buka main.dart
+Tambahkan variabel baru di dalam `class _StreamHomePageState`
+```dart
+late StreamTransformer transformer;
+```
+
+### Langkah 2: Tambahkan kode ini di initState
+```dart
+transformer = StreamTransformer<int, int>.fromHandlers(
+    handleData: (value, sink) {
+    sink.add(value * 10);
+    },
+    handleError: (error, trace, sink) {
+    sink.add(-1);
+    },
+    handleDone: (sink) {
+    sink.close();
+    },
+);
+```
+
+### Langkah 3: Tetap di initState
+Lakukan edit seperti kode berikut.
+```dart
+@override
+void initState() {
+    numberStream = NumberStream();
+    numberStreamController = numberStream.controller;
+    Stream stream = numberStreamController.stream;
+    stream.transform(transformer).listen((event) {
+        setState(() {
+        lastNumber = event;
+        });
+    },).onError((error){
+        setState(() {
+        lastNumber = -1;
+        });
+    });
+    transformer = StreamTransformer<int, int>.fromHandlers(
+        handleData: (value, sink) {
+        sink.add(value * 10);
+        },
+        handleError: (error, trace, sink) {
+        sink.add(-1);
+        },
+        handleDone: (sink) {
+        sink.close();
+        },
+    );
+    super.initState();
+}
+```
+
+### Langkah 4: Run
+Terakhir, run atau tekan F5 untuk melihat hasilnya jika memang belum running. Bisa juga lakukan hot restart jika aplikasi sudah running. Maka hasilnya akan seperti gambar berikut ini. Anda akan melihat tampilan angka dari 0 hingga 90.
+
+> Soal 8
+> - Jelaskan maksud kode langkah 1-3 tersebut!
+>   **Jawab**:
+>   1. Deklarasi Transformer: `StreamTransformer` dideklarasikan untuk memproses data stream sebelum diterima oleh listener.
+>   2. Inisialisasi Transformer: Mengalikan data dengan 10 (jika ada kesalahan, mengirimkan -1), dan menutup stream saat selesai.
+>   3. Penerapan Transformer pada Stream: Stream dimodifikasi oleh transformer sebelum hasilnya ditampilkan di UI.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+> - Lalu lakukan commit dengan pesan "W13: Jawaban Soal 8".
+
+![result](result-prak3.gif)

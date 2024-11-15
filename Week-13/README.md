@@ -79,3 +79,31 @@ class ColorStream {
 >
 > - Tambahkan 5 warna lainnya sesuai keinginan Anda pada variabel colors tersebut.
 > - Lakukan commit hasil jawaban Soal 2 dengan pesan "W13: Jawaban Soal 2"
+
+### Langkah 5: Tambah method getColors()
+Di dalam class ColorStream ketik method seperti kode berikut. Perhatikan tanda bintang di akhir keyword `async*` (ini digunakan untuk melakukan Stream data)
+```dart
+Stream<Color> getColors() async* {
+
+}
+```
+
+### Langkah 6: Tambah perintah yield*
+Tambahkan kode berikut ini.
+```dart
+Stream<Color> getColors() async* {
+    yield* Stream.periodic(
+        const Duration(seconds: 1), (int t) {
+        int index = t % colors.length;
+        return colors[index];
+    });
+}
+```
+
+> Soal 3
+>
+> - Jelaskan fungsi keyword yield* pada kode tersebut!
+>   **`yield*`** meneruskan seluruh elemen dari *stream* `Stream.periodic(...)` ke dalam *stream* `getColors()` secara otomatis, menghasilkan nilai tanpa harus menulis `yield` berulang kali.
+> - Apa maksud isi perintah kode tersebut?
+>   Kode tersebut menghasilkan warna dari daftar `colors` setiap detik, berulang dari awal daftar setelah mencapai warna terakhir, sehingga membentuk pola warna berulang.
+> - Lakukan commit hasil jawaban Soal 3 dengan pesan "W13: Jawaban Soal 3"

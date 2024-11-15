@@ -8,4 +8,12 @@ class ColorStream {
     const Color(0xff457b9d),
     const Color(0xff1d3557),
   ];
+
+  Stream<Color> getColors() async* {
+    yield* Stream.periodic(
+        const Duration(seconds: 1), (int t) {
+      int index = t % colors.length;
+      return colors[index];
+    });
+  }
 }

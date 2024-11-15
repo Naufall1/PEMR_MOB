@@ -107,3 +107,73 @@ Stream<Color> getColors() async* {
 > - Apa maksud isi perintah kode tersebut?
 >   Kode tersebut menghasilkan warna dari daftar `colors` setiap detik, berulang dari awal daftar setelah mencapai warna terakhir, sehingga membentuk pola warna berulang.
 > - Lakukan commit hasil jawaban Soal 3 dengan pesan "W13: Jawaban Soal 3"
+
+### Langkah 7: Buka main.dart
+Ketik kode impor file ini pada file main.dart
+```dart
+import 'stream.dart';
+```
+
+### Langkah 8: Tambah variabel
+Ketik dua properti ini di dalam `class _StreamHomePageState`
+```dart
+class _StreamHomePageState extends State<StreamHomePage> {
+  Color bgColor = const Color(0xffE63946);
+  late ColorStream colorStream;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+```
+
+### Langkah 9: Tambah method changeColor()
+Tetap di file main, Ketik kode seperti berikut
+```dart
+void changeColor() async {
+    await for (var eventColor in colorStream.getColors()) {
+        setState(() {
+        bgColor = eventColor;
+        });
+    }
+}
+```
+
+### Langkah 10: Lakukan override initState()
+Ketika kode seperti berikut
+```dart
+@override
+void initState() {
+    super.initState();
+    colorStream = ColorStream();
+    changeColor();
+}
+```
+
+### Langkah 11: Ubah isi Scaffold()
+Sesuaikan kode seperti berikut.
+```dart
+@override
+Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+        title: const Text("Stream [Naufal]"),
+        ),
+        body: Container(
+        decoration: BoxDecoration(
+            color: bgColor
+        ),
+        ),
+    );
+}
+```
+
+### Langkah 12: Run
+Lakukan running pada aplikasi Flutter Anda, maka akan terlihat berubah warna background setiap detik.
+
+> Soal 4
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+> - Lakukan commit hasil jawaban Soal 4 dengan pesan "W13: Jawaban Soal 4"
+
+![result](result-prak1.gif)

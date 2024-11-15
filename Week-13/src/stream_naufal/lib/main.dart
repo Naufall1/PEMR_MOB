@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'stream.dart';
+import 'dart:async';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -28,12 +30,27 @@ class StreamHomePage extends StatefulWidget {
 class _StreamHomePageState extends State<StreamHomePage> {
   Color bgColor = const Color(0xffE63946);
   late ColorStream colorStream;
+  int lastNumber = 0;
+  late StreamController numberStreamController;
+  late NumberStream numberStream;
 
   @override
   void initState() {
+    numberStream = NumberStream();
+    numberStreamController = numberStream.controller;
+    Stream stream = numberStreamController.stream;
+    stream.listen((event) {
+      setState(() {
+        lastNumber = event;
+      });
+    },);
     super.initState();
-    colorStream = ColorStream();
-    changeColor();
+  }
+
+  @override
+  void dispose() {
+    numberStreamController.close();
+    super.dispose();
   }
 
   @override
@@ -42,9 +59,18 @@ class _StreamHomePageState extends State<StreamHomePage> {
       appBar: AppBar(
         title: const Text("Stream [Naufal]"),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: bgColor
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(lastNumber.toString()),
+            ElevatedButton(
+                onPressed: () => addRandomNumber(),
+                child: const Text('New Random Number')
+            )
+          ],
         ),
       ),
     );
@@ -56,5 +82,11 @@ class _StreamHomePageState extends State<StreamHomePage> {
         bgColor = eventColor;
       });
     },);
+  }
+
+  void addRandomNumber() {
+    Random random = Random();
+    int myNum = random.nextInt(10);
+    numberStream.addNumberToSink(myNum);
   }
 }

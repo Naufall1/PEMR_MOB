@@ -196,3 +196,129 @@ void changeColor() async {
 >   - **`await for`** digunakan untuk mengiterasi setiap nilai *stream* secara berurutan, sambil menunggu nilai berikutnya diproses satu per satu secara sinkron.
 >   - **`listen`** menggunakan *callback* untuk menangani data secara asinkron, memungkinkan UI atau variabel diperbarui segera saat data diterima, tanpa perlu menunggu setiap nilai selesai diproses.
 > - Lakukan commit hasil jawaban Soal 5 dengan pesan "W13: Jawaban Soal 5"
+
+
+## Praktikum 2: Stream controllers dan sinks
+
+### Langkah 1: Buka file stream.dart
+Lakukan impor dengan mengetik kode ini.
+```dart
+import 'dart:async';
+```
+
+### Langkah 2: Tambah class NumberStream
+Tetap di file `stream.dart` tambah class baru seperti berikut.
+```dart
+class NumberStream {
+
+}
+```
+
+### Langkah 3: Tambah StreamController
+Di dalam `class NumberStream` buatlah variabel seperti berikut.
+```dart
+final StreamController<int> controller = StreamController<int>();
+```
+
+
+### Langkah 4: Tambah method addNumberToSink
+Tetap di `class NumberStream` buatlah method ini
+```dart
+void addNumberToSink(int newNumber) {
+    controller.sink.add(newNumber);
+}
+```
+
+### Langkah 5: Tambah method close()
+```dart
+void close() {
+    controller.close();
+}
+```
+
+### Langkah 6: Buka main.dart
+Ketik kode import seperti berikut
+```dart
+import 'dart:async';
+import 'dart:math';
+```
+
+### Langkah 7: Tambah variabel
+Di dalam `class _StreamHomePageState` ketik variabel berikut
+```dart
+int lastNumber = 0;
+late StreamController numberStreamController;
+late NumberStream numberStream;
+```
+
+### Langkah 8: Edit initState()
+```dart
+@override
+void initState() {
+    numberStream = NumberStream();
+    numberStreamController = numberStream.controller;
+    Stream stream = numberStreamController.stream;
+    stream.listen((event) {
+        setState(() {
+        lastNumber = event;
+        });
+    },);
+    super.initState();
+}
+```
+
+### Langkah 9: Edit dispose()
+```dart
+@override
+void dispose() {
+    numberStreamController.close();
+    super.dispose();
+}
+```
+
+### Langkah 10: Tambah method addRandomNumber()
+```dart
+void addRandomNumber() {
+  Random random = Random();
+  int myNum = random.nextInt(10);
+  numberStream.addNumberToSink(myNum);
+}
+```
+### Langkah 11: Edit method build()
+```dart
+@override
+Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+        title: const Text("Stream [Naufal]"),
+        ),
+        body: SizedBox(
+        width: double.infinity,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+            Text(lastNumber.toString()),
+            ElevatedButton(
+                onPressed: () => addRandomNumber(),
+                child: const Text('New Random Number')
+            )
+            ],
+        ),
+        ),
+    );
+}
+```
+
+### Langkah 12: Run
+Lakukan running pada aplikasi Flutter Anda, maka akan terlihat seperti gambar berikut.
+
+> Soal 6
+> - Jelaskan maksud kode langkah 8 dan 10 tersebut!
+>   **Jawab**:
+>   - Langkah 8: initState mendengarkan stream untuk memperbarui UI setiap kali angka baru ditambahkan, memastikan nilai lastNumber selalu tampak terkini.
+>   - Langkah 10: addRandomNumber menghasilkan angka acak dan menambahkannya ke stream, memungkinkan angka baru ditampilkan di UI setiap kali tombol ditekan.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+> - Lalu lakukan commit dengan pesan "W13: Jawaban Soal 6".
+
+![result](result-prak2.gif)

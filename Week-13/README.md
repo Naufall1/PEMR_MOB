@@ -322,3 +322,52 @@ Lakukan running pada aplikasi Flutter Anda, maka akan terlihat seperti gambar be
 > - Lalu lakukan commit dengan pesan "W13: Jawaban Soal 6".
 
 ![result](result-prak2.gif)
+
+### Langkah 13: Buka stream.dart
+Tambahkan method berikut ini.
+```dart
+addError() {
+    controller.sink.addError('error');
+}
+```
+
+### Langkah 14: Buka main.dart
+Tambahkan method onError di dalam class StreamHomePageState pada method listen di fungsi initState() seperti berikut ini.
+```dart
+@override
+void initState() {
+    numberStream = NumberStream();
+    numberStreamController = numberStream.controller;
+    Stream stream = numberStreamController.stream;
+    stream.listen((event) {
+        setState(() {
+        lastNumber = event;
+        });
+    },).onError((error){
+        setState(() {
+        lastNumber = -1;
+        });
+    });
+    super.initState();
+}
+```
+
+### Langkah 15: Edit method addRandomNumber()
+Lakukan comment pada dua baris kode berikut, lalu ketik kode seperti berikut ini.
+```dart
+void addRandomNumber() {
+    Random random = Random();
+    // int myNum = random.nextInt(10);
+    // numberStream.addNumberToSink(myNum);
+    numberStream.addError();
+}
+```
+
+> Soal 7
+> - Jelaskan maksud kode langkah 13 sampai 15 tersebut!
+>   **Jawab**:
+>   - Langkah 13: `addError` menambahkan kesalahan ke dalam stream, yang nantinya dapat ditangani oleh `listener`.
+>   - Langkah 14: `onError` pada listen menangani kesalahan di stream dan memperbarui `lastNumber` menjadi -1 untuk menampilkan indikator kesalahan di UI.
+>   - Langkah 15: `addRandomNumber` diubah untuk memicu kesalahan pada stream alih-alih menambahkan angka, sehingga UI menampilkan indikator kesalahan setiap kali tombol ditekan.
+> - Kembalikan kode seperti semula pada Langkah 15, comment `addError()` agar Anda dapat melanjutkan ke praktikum 3 berikutnya.
+> - Lalu lakukan commit dengan pesan "W13: Jawaban Soal 7".

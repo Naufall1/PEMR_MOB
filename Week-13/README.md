@@ -441,3 +441,145 @@ Terakhir, run atau tekan F5 untuk melihat hasilnya jika memang belum running. Bi
 > - Lalu lakukan commit dengan pesan "W13: Jawaban Soal 8".
 
 ![result](result-prak3.gif)
+
+
+## Praktikum 4: Subscribe ke stream events
+
+### Langkah 1: Tambah variabel
+Tambahkan variabel berikut di `class _StreamHomePageState`
+```dart
+late StreamSubscription subscription;
+```
+
+### Langkah 2: Edit `initState()`
+Edit kode seperti berikut ini.
+```dart
+@override
+  void initState() {
+    numberStream = NumberStream();
+    numberStreamController = numberStream.controller;
+    Stream stream = numberStreamController.stream;
+    subscription = stream.listen(
+      (event) {
+        setState(() {
+          lastNumber = event;
+        });
+      },
+    );
+}
+```
+
+### Langkah 3: Tetap di `initState()`
+Tambahkan kode berikut ini.
+```dart
+@override
+  void initState() {
+    numberStream = NumberStream();
+    numberStreamController = numberStream.controller;
+    Stream stream = numberStreamController.stream;
+    subscription = stream.listen(
+      (event) {
+        setState(() {
+          lastNumber = event;
+        });
+      },
+    );
+    subscription.onError((error) {
+      setState(() {
+        lastNumber = -1;
+      });
+    });
+}
+```
+
+### Langkah 4: Tambah properti `onDone()`
+Tambahkan dibawahnya kode ini setelah `onError`
+```dart
+@override
+void initState() {
+    numberStream = NumberStream();
+    numberStreamController = numberStream.controller;
+    Stream stream = numberStreamController.stream;
+    subscription = stream.listen(
+        (event) {
+        setState(() {
+            lastNumber = event;
+        });
+        },
+    );
+    subscription.onError((error) {
+        setState(() {
+        lastNumber = -1;
+        });
+    });
+    subscription.onDone(() {
+        print('OnDone was called');
+    });
+    super.initState();
+}
+```
+
+### Langkah 5: Tambah method baru
+Ketik method ini di dalam `class _StreamHomePageState`
+```dart
+void stopStream() {
+    numberStreamController.close();
+}
+```
+
+### Langkah 6: Pindah ke method `dispose()`
+Jika method `dispose()` belum ada, Anda dapat mengetiknya dan dibuat override. Ketik kode ini didalamnya.
+```dart
+@override
+void dispose() {
+    numberStreamController.close();
+    subscription.cancel();
+    super.dispose();
+}
+```
+
+### Langkah 7: Pindah ke method `build()`
+Tambahkan button kedua dengan isi kode seperti berikut ini.
+```dart
+children: [
+    Text(lastNumber.toString()),
+    ElevatedButton(
+        onPressed: () => addRandomNumber(),
+        child: const Text('New Random Number')),
+    ElevatedButton(
+        onPressed: () => stopStream(),
+        child: const Text('Stop Subscription')),
+],
+```
+
+### Langkah 8: Edit method `addRandomNumber()`
+Edit kode seperti berikut ini.
+```dart
+void addRandomNumber() {
+    Random random = Random();
+    int myNum = random.nextInt(10);
+    if (!numberStreamController.isClosed) {
+        numberStream.addNumberToSink(myNum);
+    } else {
+        setState(() {
+        lastNumber = -1;
+        });
+    }
+        }
+```
+
+### Langkah 9: Run
+Anda akan melihat dua button seperti gambar berikut.
+![alt text](result-prak4.gif)
+
+### Langkah 10: Tekan button `Stop Subscription`
+Anda akan melihat pesan di Debug Console seperti berikut.
+![alt text](image-1.png)
+
+> Soal 9
+> - Jelaskan maksud kode langkah 2, 6 dan 8 tersebut!
+>   - Langkah 2 (initState): Mendengarkan data dari stream menggunakan subscription.listen, memperbarui nilai lastNumber secara real-time saat stream mengirimkan data baru.
+>   - Langkah 6 (dispose): Membersihkan sumber daya dengan menutup numberStreamController dan membatalkan subscription untuk mencegah kebocoran memori.
+>   - Langkah 8 (addRandomNumber): Menambahkan angka acak ke stream hanya jika stream belum ditutup; jika stream sudah ditutup, menampilkan indikator -1 sebagai status.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+> - Lalu lakukan commit dengan pesan "W12: Jawaban Soal 9".

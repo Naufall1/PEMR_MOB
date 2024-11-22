@@ -13,10 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Stream [Naufal]',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: const StreamHomePage()
-    );
+        title: 'Stream [Naufal]',
+        theme: ThemeData(primarySwatch: Colors.deepPurple),
+        home: const StreamHomePage());
   }
 }
 
@@ -34,31 +33,27 @@ class _StreamHomePageState extends State<StreamHomePage> {
   late StreamController numberStreamController;
   late NumberStream numberStream;
   late StreamTransformer transformer;
+  late StreamSubscription subscription;
 
   @override
   void initState() {
-    transformer = StreamTransformer<int, int>.fromHandlers(
-      handleData: (value, sink) {
-        sink.add(value * 10);
-      },
-      handleError: (error, trace, sink) {
-        sink.add(-1);
-      },
-      handleDone: (sink) {
-        sink.close();
-      },
-    );
     numberStream = NumberStream();
     numberStreamController = numberStream.controller;
     Stream stream = numberStreamController.stream;
-    stream.transform(transformer).listen((event) {
-      setState(() {
-        lastNumber = event;
-      });
-    },).onError((error){
+    subscription = stream.listen(
+      (event) {
+        setState(() {
+          lastNumber = event;
+        });
+      },
+    );
+    subscription.onError((error) {
       setState(() {
         lastNumber = -1;
       });
+    });
+    subscription.onDone(() {
+      print('OnDone was called');
     });
     super.initState();
   }
@@ -66,6 +61,7 @@ class _StreamHomePageState extends State<StreamHomePage> {
   @override
   void dispose() {
     numberStreamController.close();
+    subscription.cancel();
     super.dispose();
   }
 
@@ -84,8 +80,10 @@ class _StreamHomePageState extends State<StreamHomePage> {
             Text(lastNumber.toString()),
             ElevatedButton(
                 onPressed: () => addRandomNumber(),
-                child: const Text('New Random Number')
-            )
+                child: const Text('New Random Number')),
+            ElevatedButton(
+                onPressed: () => stopStream(),
+                child: const Text('Stop Subscription')),
           ],
         ),
       ),
@@ -93,16 +91,28 @@ class _StreamHomePageState extends State<StreamHomePage> {
   }
 
   void changeColor() async {
-    colorStream.getColors().listen((eventColor) {
-      setState(() {
-        bgColor = eventColor;
-      });
-    },);
+    colorStream.getColors().listen(
+      (eventColor) {
+        setState(() {
+          bgColor = eventColor;
+        });
+      },
+    );
   }
 
   void addRandomNumber() {
     Random random = Random();
     int myNum = random.nextInt(10);
-    numberStream.addNumberToSink(myNum);
+    if (!numberStreamController.isClosed) {
+      numberStream.addNumberToSink(myNum);
+    } else {
+      setState(() {
+        lastNumber = -1;
+      });
+    }
+  }
+
+  void stopStream() {
+    numberStreamController.close();
   }
 }

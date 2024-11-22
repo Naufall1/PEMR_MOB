@@ -672,3 +672,137 @@ Tekan button `New Random Number` beberapa kali, maka akan tampil teks angka teru
 >   Terjadi karena perubahan pada line `Stream stream = numberStreamController.stream.asBroadcastStream();`.
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 > - Lalu lakukan commit dengan pesan "W12: Jawaban Soal 10,11".
+
+## Praktikum 6: StreamBuilder
+
+### Langkah 1: Buat Project Baru
+Buatlah sebuah project flutter baru dengan nama streambuilder_nama (beri nama panggilan Anda) di folder week-12/src/ repository GitHub Anda.
+![alt text](image-3.png)
+
+### Langkah 2: Buat file baru stream.dart
+```dart
+class NumberStream {
+
+}
+```
+
+### Langkah 3: Tetap di file stream.dart
+```dart
+import 'dart:math';
+
+class NumberStream {
+  Stream<int> getNumbers() async* {
+    yield* Stream.periodic(
+      const Duration(seconds: 1),
+      (int t) {
+        Random random = Random();
+        int myNum = random.nextInt(10);
+        return myNum;
+      },
+    );
+  }
+}
+```
+
+### Langkah 4: Edit main.dart
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Stream',
+      theme: ThemeData(primaryColor: Colors.deepPurple),
+      home: const StreamHomePage(),
+    );
+  }
+}
+
+class StreamHomePage extends StatefulWidget {
+  const StreamHomePage({super.key});
+
+  @override
+  State<StreamHomePage> createState() => _StreamHomePageState();
+}
+
+class _StreamHomePageState extends State<StreamHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Stream'),
+      ),
+      body: Container(
+
+      ),
+    );
+  }
+}
+```
+
+### Langkah 5: Tambah variabel
+Di dalam class _StreamHomePageState, ketika variabel ini.
+```dart
+late Stream<int> numberStream;
+```
+
+### Langkah 6: Edit initState()
+Ketik kode seperti berikut.
+```dart
+@override
+void initState() {
+  numberStream = NumberStream().getNumbers();
+  super.initState();
+}
+```
+
+### Langkah 7: Edit method build()
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Stream'),
+    ),
+    body: StreamBuilder(
+      stream: numberStream,
+      initialData: 0,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print('Error!');
+        }
+        if (snapshot.hasData) {
+          return Center(
+            child: Text(
+              snapshot.data.toString(),
+              style: const TextStyle(fontSize: 96),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    ),
+  );
+}
+```
+
+### Langkah 8: Run
+Hasilnya, setiap detik akan tampil angka baru seperti berikut.
+
+![alt text](result-prak6.gif)
+
+> **Soal 12**
+> - Jelaskan maksud kode pada langkah 3 dan 7 !
+>   **Jawab:**
+>   - Langkah 3: Membuat stream data menggunakan Stream.periodic yang menghasilkan angka random (0–9) setiap detik menggunakan Random. Angka-angka ini akan ditampilkan secara bertahap melalui stream.
+>   - Langkah 7: Menggunakan StreamBuilder untuk menampilkan angka dari stream secara real-time di UI. StreamBuilder memperbarui tampilan setiap kali data baru dipancarkan.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+> - Lalu lakukan commit dengan pesan "W12: Jawaban Soal 12".

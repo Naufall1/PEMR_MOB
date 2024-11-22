@@ -335,3 +335,129 @@ Future<List<Pizza>> readJsonFile() async {
 
 ### 5. Jalankan aplikasi. Anda akan melihat string JSON dicetak, seperti yang ditunjukkan pada gambar berikut:
 ![alt text](image-5.png)
+
+
+## C. Praktikum 3: Saving data simply with SharedPreferences
+### 1. Gunakan project pada pertemuan 11 bernama books. Pertama, tambahkan ketergantungan pada shared_preferences. Dari Terminal Anda, ketikkan perintah berikut
+```bash
+flutter pub add shared_preferences
+```
+
+### 2. Untuk memperbarui dependensi dalam proyek Anda, jalankan perintah flutter pub get dari jendela Terminal.
+```bash
+flutter pub get
+```
+
+### 3. Di bagian atas file main.dart, impor shared_preferences:
+```dart
+import 'package:shared_preferences/shared_preferences.dart';
+```
+
+### 4. Di bagian atas kelas _MyHomePageState, buat variabel status integer baru bernama appCounter:
+```dart
+int appCounter = 0;
+```
+
+### 5. Dalam kelas _MyHomePageState, buat metode asinkron baru yang disebut readAndWritePreferences():
+```dart
+Future readAndWritePreference() async {}
+```
+
+### 6. Di dalam metode readAndWritePreference, buatlah sebuah instance dari SharedPreferences:
+```dart
+SharedPreferences prefs = await SharedPreferences.getInstance();
+```
+
+### 7. Setelah membuat instance preferensi, kita membuat kode yang mencoba baca nilai kunci appCounter. Jika nilainya nol, setel ke 0; lalu naikkan nilainya:
+```dart
+appCounter = prefs.getInt('appCounter') ?? 0;
+appCounter++;
+```
+
+### 8. Setelah itu, atur nilai kunci appCounter di preferensi ke nilai baru:
+```dart
+await prefs.setInt('appCounter', appCounter);
+```
+
+### 9. Memperbarui nilai status appCounter:
+```dart
+setState(() {
+    appCounter = appCounter;
+});
+```
+
+### 10. Pada metode initState di kelas _MyHomePageState, panggil metode readAndWritePreference() dengan kode yang dicetak tebal:
+```dart
+@override
+void initState() {
+    super.initState();
+    readAndWritePreference();
+}
+```
+
+### 11. Dalam metode build, tambahkan kode berikut ini di dalam widget Container:
+```dart
+@override
+Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+        title: const Text('JSON'),
+        ),
+        body: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+            Text('You have opened the app $appCounter times'),
+            ElevatedButton(
+                onPressed: () {
+
+                },
+                child: Text('Reset counter')
+            )
+            ],
+        ),
+        )
+    );
+}
+```
+
+### 12. Jalankan aplikasi. Saat pertama kali membukanya, Anda akan melihat layar yang mirip dengan yang berikut ini:
+![alt text](image-6.png)
+
+### 13. Tambahkan metode baru ke kelas _MyHomePageState yang disebut deletePreference(), yang akan menghapus nilai yang disimpan:
+```dart
+Future deletePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      appCounter = 0;
+    });
+}
+```
+
+### 14. Dari properti onPressed dari widget ElevatedButton di metode build(), memanggil metode deletePreference(), dengan kode di cetak tebal:
+```dart
+@override
+Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+            title: const Text('JSON'),
+        ),
+        body: Center(
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+                Text('You have opened the app $appCounter times'),
+                ElevatedButton(
+                    onPressed: () {
+                    deletePreference();
+                    },
+                    child: Text('Reset counter'))
+            ],
+            ),
+        ));
+}
+```
+
+### 15. Jalankan aplikasi lagi. Sekarang, saat Anda menekan tombol Reset penghitung, nilai appCounter akan dihapus
+![alt text](image-7.png)

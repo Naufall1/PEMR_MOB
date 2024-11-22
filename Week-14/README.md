@@ -604,3 +604,121 @@ Widget build(BuildContext context) {
 ```
 ### 7. Jalankan aplikasi dan tekan tombol Baca File. Di bawah tombol tersebut, Anda akan melihat teks Margherita, Capricciosa, Napoli, seperti yang ditunjukkan pada tangkapan layar berikut:
 ![alt text](image-9.png)
+
+
+## F. Praktikum 6: Using secure storage to store data
+### 1. Tambahkan flutter_secure_storage ke proyek Anda, dengan mengetik:
+```bash
+flutter pub add flutter_secure_storage
+```
+### 2. Di file main.dart, salin kode berikut:
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primaryColor: Colors.deepPurple,
+      ),
+      home: const MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final pwdController = TextEditingController();
+  String myPass = '';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Path Provider'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(
+              controller: pwdController,
+            ),
+            ElevatedButton(onPressed: () {}, child: Text('Save Value')),
+            ElevatedButton(onPressed: () {}, child: Text('Read Value')),
+            Text(myPass)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```
+### 3. Di bagian atas file main.dart, tambahkan impor yang diperlukan:
+```dart
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+```
+
+### 4. Di bagian atas kelas _myHomePageState, buat penyimpanan yang aman:
+```dart
+final storage = const FlutterSecureStorage();
+final myKey = 'myPass';
+```
+
+### 5. Di kelas _myHomePageState, tambahkan metode untuk menulis data ke penyimpanan aman:
+```dart
+Future writeToSecureStorage() async {
+    await storage.write(key: myKey, value: pwdController.text);
+}
+```
+
+### 6. Pada metode build() dari kelas _myHomePageState, tambahkan kode yang akan menulis ke penyimpanan ketika pengguna menekan tombol Save Value, cek kode cetak tebal:
+```dart
+ElevatedButton(
+    onPressed: () {
+        writeToSecureStorage();
+    },
+    child: Text('Save Value')),
+```
+
+### 7. Di kelas _myHomePageState, tambahkan metode untuk membaca data dari penyimpanan aman:
+```dart
+Future<String> readFromSecureStorage() async {
+    String secret = await storage.read(key: myKey) ?? '';
+    return secret;
+}
+```
+
+### 8. Pada metode build() dari kelas _myHomePageState, tambahkan kode untuk membaca dari penyimpanan ketika pengguna menekan tombol Read Value dan memperbarui variabel myPass State:
+```dart
+ElevatedButton(
+    onPressed: () {
+        readFromSecureStorage();
+    },
+    child: Text('Read Value')),
+```
+
+### 9. Jalankan aplikasi dan tulis beberapa teks pilihan Anda di bidang teks. Kemudian, tekan tombol Save Value. Setelah itu, tekan tombol Read Value. Anda akan melihat teks yang Anda ketik di kolomteks, seperti yang ditunjukkan pada tangkapan layar berikut:
+![alt text](image-10.png)
+
+### Kerjakan modul praktikum ini, dan buatlah laporannya, upload project ke github dan kumpulkan sesuai link yang disediakan

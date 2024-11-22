@@ -583,3 +583,92 @@ Anda akan melihat pesan di Debug Console seperti berikut.
 >   - Langkah 8 (addRandomNumber): Menambahkan angka acak ke stream hanya jika stream belum ditutup; jika stream sudah ditutup, menampilkan indikator -1 sebagai status.
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 > - Lalu lakukan commit dengan pesan "W12: Jawaban Soal 9".
+
+
+## Praktikum 5: Multiple stream subscriptions
+
+### Langkah 1: Buka file main.dart
+Ketik variabel berikut di class _StreamHomePageState
+```dart
+late StreamSubscription subscription2;
+String values = '';
+```
+
+### Langkah 2: Edit initState()
+Ketik kode seperti berikut.
+```dart
+subscription = stream.listen(
+  (event) {
+    setState(() {
+      values += '$event -';
+    });
+  },
+);
+subscription2 = stream.listen(
+      (event) {
+    setState(() {
+      values += '$event -';
+    });
+  },
+);
+```
+
+
+### Langkah 3: Run
+Lakukan run maka akan tampil error seperti gambar berikut.
+![alt text](image-2.png)
+
+
+> Soal 10
+> Jelaskan mengapa error itu bisa terjadi ?
+> **Jawab**:
+> Karena stream dilakukan listen 2 kali
+
+### Langkah 4: Set broadcast stream
+Ketik kode seperti berikut di method initState()
+```dart
+@override
+void initState() {
+  numberStream = NumberStream();
+  numberStreamController = numberStream.controller;
+  Stream stream = numberStreamController.stream.asBroadcastStream();
+```
+
+### Langkah 5: Edit method build()
+Tambahkan text seperti berikut
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text("Stream [Naufal]"),
+    ),
+    body: SizedBox(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(values),
+          ElevatedButton(
+              onPressed: () => addRandomNumber(),
+              child: const Text('New Random Number')),
+          ElevatedButton(
+              onPressed: () => stopStream(),
+              child: const Text('Stop Subscription')),
+        ],
+      ),
+    ),
+  );
+}
+```
+
+### Langkah 6: Run
+Tekan button `New Random Number` beberapa kali, maka akan tampil teks angka terus bertambah sebanyak dua kali.
+![alt text](result-prak5.gif)
+
+> Soal 11
+> - Jelaskan mengapa hal itu bisa terjadi ?
+>   Terjadi karena perubahan pada line `Stream stream = numberStreamController.stream.asBroadcastStream();`.
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+> - Lalu lakukan commit dengan pesan "W12: Jawaban Soal 10,11".

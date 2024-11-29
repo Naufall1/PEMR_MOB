@@ -86,6 +86,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: Text(snapshot.data![index].pizzaName),
                 subtitle: Text(
                     '${snapshot.data![index].description} - \$ ${snapshot.data![index].price}'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PizzaDetailScreen(
+                            pizza: snapshot.data![index], isNew: false),
+                      ));
+                },
               );
             },
           );
@@ -97,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const PizzaDetailScreen(),
+                builder: (context) => PizzaDetailScreen(pizza: Pizza(), isNew: true,),
               ));
         },
       ),

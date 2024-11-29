@@ -357,3 +357,108 @@ Widget build(BuildContext context) {
 
 ### 16. Tambahkan detail pizza di kolom teks dan tekan tombol Kirim Postingan. Anda akan melihat hasil yang berhasil, seperti yang ditunjukkan pada gambar berikut.
 ![alt text](image-8.png)
+
+
+## Praktikum 3, PUT-ting data
+### 1. Masuk ke layanan Lab Mock di https://app.wiremock.cloud/ dan klik bagian Stubs, kemudian, buatlah stub baru.
+![alt text](image-10.png)
+
+### 2. Lengkapi isian seperti gambar berikut:
+![alt text](image-11.png)
+
+### 3. Simpan
+
+### 4. Di proyek Flutter, tambahkan metode putPizza ke kelas HttpHelper di file http_helper.dart
+```dart
+Future<String> putPizza(Pizza pizza) async {
+    const putPath = '/pizza';
+    String put = json.encode(pizza.toJson());
+    Uri url = Uri.https(authority, putPath);
+    http.Response r = await http.put(url, body: put);
+    return r.body;
+}
+```
+
+### 5. Di kelas PizzaDetailScreen di file pizza_detail.dart, tambahkan dua properti, Pizza dan boolean, dan di konstruktor, atur dua properti tersebut
+```dart
+final Pizza pizza;
+final bool isNew;
+
+const PizzaDetailScreen({super.key, required this.pizza, required this.isNew});
+```
+
+### 6. Di kelas PizzaDetailScreenState, override metode initState. Bila properti isNew dari kelas PizzaDetail tidak baru, properti ini akan menetapkan konten TextFields dengan nilai objek Pizza yang dilewatkan
+```dart
+@override
+  void initState() {
+    if (!widget.isNew) {
+      txtId.text = widget.pizza.id.toString();
+      txtName.text = widget.pizza.pizzaName;
+      txtDescription.text = widget.pizza.description;
+      txtPrice.text = widget.pizza.price.toString();
+      txtImageUrl.text = widget.pizza.imageUrl;
+    }
+    super.initState();
+}
+```
+
+### 7. Edit metode savePizza sehingga memanggil metode helper.postPizza ketika properti isNew bernilai benar, dan helper.putPizza ketika bernilai salah
+```dart
+Future savePizza() async {
+    HttpHelper helper = HttpHelper();
+    Pizza pizza = Pizza();
+    pizza.id = int.tryParse(txtId.text) ?? 0;
+    pizza.pizzaName = txtName.text;
+    pizza.description = txtDescription.text;
+    pizza.price = double.tryParse(txtPrice.text) ?? 0;
+    pizza.imageUrl = txtImageUrl.text;
+
+    String result = await (widget.isNew ? helper.postPizza(pizza) : helper.putPizza(pizza));
+    setState(() {
+      operationalResult = result;
+    });
+}
+```
+
+### 8. Di file main.dart, di metode build _MyHomePageState, tambahkan properti onTap ke ListTile sehingga saat pengguna mengetuknya, aplikasi akan mengubah rute dan menampilkan layar PizzaDetail, dengan menampilkan data pizza yang ada saat ini dan menjadikan false untuk parameter isNew
+```dart
+return ListView.builder(
+    itemCount: (snapshot.data == null) ? 0 : snapshot.data!.length,
+    itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+        title: Text(snapshot.data![index].pizzaName),
+        subtitle: Text(
+            '${snapshot.data![index].description} - \$ ${snapshot.data![index].price}'),
+        onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) => PizzaDetailScreen(
+                    pizza: snapshot.data![index], isNew: false),
+                ));
+        },
+        );
+    },
+);
+```
+
+### 9. Di floatingActionButton, passing data Pizza baru dan menjadikan true untuk parameter isNew ke rute PizzaDetail
+```dart
+floatingActionButton: FloatingActionButton(
+    child: const Icon(Icons.add),
+    onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) => PizzaDetailScreen(pizza: Pizza(), isNew: true,),
+            ));
+    },
+),
+```
+
+### 10. Jalankan aplikasi. Pada layar utama, ketuk Pizza mana pun untuk menavigasi ke rute PizzaDetail
+
+
+### 11. Edit detail pizza di kolom teks dan tekan tombol Simpan. Anda akan melihat pesan yang menunjukkan bahwa detail pizza telah diperbarui
+
+![alt](result-prak3.gif)

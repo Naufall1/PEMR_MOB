@@ -82,18 +82,28 @@ class _MyHomePageState extends State<MyHomePage> {
           return ListView.builder(
             itemCount: (snapshot.data == null) ? 0 : snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text(snapshot.data![index].pizzaName),
-                subtitle: Text(
-                    '${snapshot.data![index].description} - \$ ${snapshot.data![index].price}'),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PizzaDetailScreen(
-                            pizza: snapshot.data![index], isNew: false),
-                      ));
+              return Dismissible(
+                key: Key(index.toString()),
+                onDismissed: (item) {
+                  HttpHelper helper = HttpHelper();
+                  snapshot.data!.removeWhere(
+                    (element) => element.id == snapshot.data![index].id,
+                  );
+                  helper.deletePizza(snapshot.data![index].id);
                 },
+                child: ListTile(
+                  title: Text(snapshot.data![index].pizzaName),
+                  subtitle: Text(
+                      '${snapshot.data![index].description} - \$ ${snapshot.data![index].price}'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PizzaDetailScreen(
+                              pizza: snapshot.data![index], isNew: false),
+                        ));
+                  },
+                ),
               );
             },
           );
@@ -105,7 +115,10 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PizzaDetailScreen(pizza: Pizza(), isNew: true,),
+                builder: (context) => PizzaDetailScreen(
+                  pizza: Pizza(),
+                  isNew: true,
+                ),
               ));
         },
       ),

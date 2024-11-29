@@ -20,4 +20,12 @@ class HttpHelper {
       return [];
     }
   }
+
+  Future<String> postPizza(Pizza pizza) async {
+    const postPath = '/pizza';
+    String post = json.encode(pizza.toJson());
+    Uri uri = Uri.https(authority, postPath);
+    http.Response r = await http.post(uri, body: post);
+    return r.body;
+  }
 }
